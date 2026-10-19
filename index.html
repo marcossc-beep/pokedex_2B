@@ -3,6 +3,7 @@
 <input type="text" placeholder="nome do pokemon" id="nome">
 <input type="text" placeholder="tipo" id="tipo">
 <input type="text" placeholder="genero" id="genero">
+<input type="text" placeholder="imagem" id="imagem">
 
 <button onclick="cadastrar()">cadastrar</button>
 
@@ -10,7 +11,6 @@
 
 
 <div id="lista"></div>
-<img src="">
 
 <script>
 
@@ -18,9 +18,10 @@
         const nome = document.getElementById('nome').value
         const tipo = document.getElementById('tipo').value
         const genero = document.getElementById('genero').value
+        const imagem = document.getElementById('imagem').value
 
         const pokemon = {
-            nome, tipo, genero
+            nome, tipo, genero, imagem
         }
         const resultado = await fetch('http://localhost:3000/pokedex', {
             method: 'POST',
@@ -32,7 +33,17 @@
     }
 
     async function buscar () {
-        const pokedex = await fetch('http://localhost:3000/pokedex')
-        alert('chegou!')
+        const resposta = await fetch('http://localhost:3000/pokedex')
+        const pokedex = await resposta.json()
+        const lista = document.getElementById('lista')
+        lista.innerHTML = ''
+
+        console.log(pokedex);
+        
+        pokedex.forEach((pokemon) => {
+            lista.innerHTML += `
+            <img width="200px" src="${pokemon.imagem}">
+            nome: ${pokemon.nome} <br> tipo: ${pokemon.tipo} <br> gênero: ${pokemon.genero} <br> <br>`
+        })
     }
 </script>
